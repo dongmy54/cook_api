@@ -12,7 +12,7 @@ class CooksController < ApplicationController
 		@cook = Cook.new(cook_params)
 
     response = RestClient.get "http://apis.juhe.cn/cook/query.php", 
-                              :params => { :menu => @cook.title , :key => "f7419d8cab2b316380c0790cae526c58" }
+                              :params => { :menu => @cook.title , :key => JUHE_CONFIG["api_key"] }
     @data = JSON.parse(response.body)
     
     unless dish_exist？
