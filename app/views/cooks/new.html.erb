@@ -1,0 +1,9 @@
+<div class="col-md-4 col-md-offset-4" style="margin-top: 80px;">
+<h2>菜品大搜索</h2></br>
+<%= simple_form_for @cook do |f| %>
+  <div class="form-group">
+  <%= f.input :title, input_html: { class: "form-control"} %>
+  </div>
+  <%= f.submit "开搜", class: "btn btn-primary", data: { disable_with: "Submiting..." } %>  </div>
+<% end %>
+</div>

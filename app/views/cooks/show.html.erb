@@ -1,0 +1,32 @@
+<div class="container-fluid">
+<h2 class="align-center">菜品查讯结果</h2>
+<table class="table">
+        <thead>
+            <tr>
+                <th> 编号 </th>
+                <th> 菜品名称 </th>
+                <th> 调料 </th>
+                <th> 所需材料</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+           
+            <tr>
+                <td><%= @cook.id %></td>
+                <td><%= @cook.title %></td>
+                <td><%= @cook.burden %></td>
+                <td><%= @cook.ingredients %></td>
+            </tr>
+        </tbody>
+    </table>
+    <h4> 具体做法</h4>
+      
+      <%= @cook.steps %>
+      
+    </br> 
+    </br>
+    </br>
+    <td><%= link_to('回到菜品搜索', new_cook_path, class: "btn btn-primary btn-md") %></td>
+
