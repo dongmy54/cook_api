@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  resources :cooks
-  root 'cooks#new'
+  root 'cooks#search'
+
+  get '/dish' => "cooks#dish"
+  get '/search' => "cooks#search"
 end

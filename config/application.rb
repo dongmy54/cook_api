@@ -14,4 +14,3 @@ module CookApi
   end
 end
 
-#JUHE_CONFIG = Rails.application.config_for(:juhe)

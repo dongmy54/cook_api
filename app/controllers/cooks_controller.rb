@@ -1,35 +1,31 @@
 class CooksController < ApplicationController
+  before_action :check_title_params, only: :dish
 
 	def show
 		@cook = Cook.find(params[:id])
 	end
 
-	def new
+	def search
 		@cook = Cook.new
 	end
 
-	def create
+	def dish
 		@cook = Cook.new(cook_params)
 
-    response = RestClient.get "http://apis.juhe.cn/cook/query.php", 
-                              :params => { :menu => @cook.title , :key => ENV["api_key"] }
+    response = send_request_to_api
+
     @data = JSON.parse(response.body)
     
-    unless dish_exist？
-      flash.now[:warning] = "查询不到#{@cook.title},请核实你的菜名！"
-      render :new and return
-    end 
-    @cook.update( :burden => @data["result"]["data"][0]["burden"],
-                  :title => @data["result"]["data"][0]["title"],
-                  :ingredients => @data["result"]["data"][0]["ingredients"])
-    @cook.steps = []
-    @data["result"]["data"][0]["steps"].each do |d|
-    	@cook.steps  +=  d["step"]    	
+    unless check_data_exist?
+      flash[:danger] = "查询不到#{@cook.title}这道菜，换个菜名吧！"
+      render :search and return
     end
-
-		@cook.save
-		redirect_to cook_path(@cook)
-
+    
+    @first_cook_data = @data["result"]["data"][0]
+    @cook.update( :burden      => @first_cook_data["burden"],
+                  :title       => @first_cook_data["title"],
+                  :ingredients => @first_cook_data["ingredients"])
+    making_steps
 	end
 
 	private
@@ -38,8 +34,28 @@ class CooksController < ApplicationController
 		params.require(:cook).permit(:title)
 	end
 
-  def dish_exist？
+  def check_title_params
+    unless params[:cook][:title].present?
+      flash[:danger] = "你没有输入任何菜名，请重新输入"
+      @cook = Cook.new
+      render :search
+    end
+  end
+
+  def send_request_to_api
+    RestClient.get "http://apis.juhe.cn/cook/query.php", 
+                   :params => { :menu => @cook.title , :key => ENV["api_key"] }
+  end
+
+  def check_data_exist?
     !@data["result"].nil? 
+  end
+
+  def making_steps
+    @steps = Array.new()
+    @first_cook_data["steps"].each do |s|
+      @steps  <<  s["step"]  
+    end
   end
 
 end
