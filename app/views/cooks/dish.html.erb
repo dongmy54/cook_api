@@ -23,15 +23,20 @@
         </tr>
       </tbody>
     </table>
+    
+    <div class="making">
+      <h4> 具体做法</h4>
+      <ul class="list-group">
+        <% @steps.each do |step| %> 
+          <li>
+            <%= image_tag(step["img"]) %>
+            <%= step["step"] %>
+          </li>
+        <% end %>
+      </ul></br>
 
-    <h4> 具体做法</h4>
-    <ul class="list-group">
-      <% @steps.each do |step| %> 
-        <li><%= step %></li>
-      <% end %>
-    </ul></br>
-
-    <%= link_to('回到菜品搜索', search_path, class: "btn btn-primary btn-md") %>
+      <%= link_to('回到菜品搜索', search_path, class: "btn btn-primary btn-md") %>
+    </div>
   </div>
 
 </div>

@@ -52,10 +52,7 @@ class CooksController < ApplicationController
   end
 
   def making_steps
-    @steps = Array.new()
-    @first_cook_data["steps"].each do |s|
-      @steps  <<  s["step"]  
-    end
+    @steps = @first_cook_data["steps"]
   end
 
 end
